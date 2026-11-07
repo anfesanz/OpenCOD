@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenCOD: The Open Cause-of-Death Database</title>
+    <meta
+      name="description"
+      content="OpenCOD: harmonised official cause-of-death statistics assembled from national sources worldwide."
+    />
+    <link rel="stylesheet" href="./styles.css?v=20261104-3" />
+    <script src="./vendor/plotly-2.35.2.min.js"></script>
+    <script src="./vendor/supabase-2.45.4.min.js"></script>
+    <script src="./config.js?v=20261104-2"></script>
+  </head>
+  <body>
+    <nav class="topbar" aria-label="Main">
+      <div class="topbar-inner">
+        <a class="brand" href="#top">
+          <img
+            class="brand-logo"
+            src="./assets/mirg.png"
+            alt="Mortality and Inequalities Research Group"
+          />
+          <span>OpenCOD</span>
+        </a>
+        <div class="topbar-links">
+          <a href="#dashboard">Dashboard</a>
+          <a href="#sources">Data sources</a>
+          <a href="#about">About &amp; credits</a>
+          <button id="theme-toggle" class="icon-button" type="button" aria-label="Toggle dark mode">
+            <span aria-hidden="true">◐</span>
+          </button>
+          <button id="account-button" class="pill-button" type="button">Sign in</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="page-shell" id="top">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Interactive dashboard</p>
+          <h1>OpenCOD: The Open Cause-of-Death Database</h1>
+          <p class="hero-text">
+            Explore mortality coverage by age, sex, cause of death, and geographic
+            location. Launched as a pilot in Latin America, our database is now assembled
+            exclusively from official national sources worldwide, preserving every
+            documented source caveat.
+          </p>
+          <ul class="hero-facts" id="hero-facts" aria-label="Database at a glance"></ul>
+        </div>
+
+        <div class="hero-panel" aria-label="Filters and download">
+          <label class="control">
+            <span>Country</span>
+            <select id="country-select"></select>
+          </label>
+          <div class="control-row">
+            <label class="control">
+              <span>Cause period</span>
+              <select id="year-select"></select>
+            </label>
+            <label class="control">
+              <span>Cause age group</span>
+              <select id="age-select"></select>
+            </label>
+          </div>
+
+          <div class="download-control">
+            <button id="country-download" class="download-button" type="button" disabled>
+              <span id="country-download-label">Select one country to download</span>
+              <small id="country-download-detail">Age, sex, location, cause code, year and deaths</small>
+            </button>
+            <p id="country-download-note" class="download-note"></p>
+            <p id="country-source" class="download-source"></p>
+          </div>
+        </div>
+      </header>
+
+      <main class="dashboard-grid" id="dashboard">
+        <section class="panel wide">
+          <div class="section-heading">
+            <h2>Coverage snapshot</h2>
+            <p>Coverage and size indicators for the selected country.</p>
+          </div>
+          <div id="kpi-grid" class="kpi-grid"></div>
+        </section>
+
+        <section class="panel wide">
+          <div class="section-heading">
+            <h2>Cause composition</h2>
+            <p id="waffle-subtitle">Cause-of-death composition for the selected country, age group and period.</p>
+          </div>
+          <div class="waffle-layout">
+            <div id="waffle-chart" class="waffle-chart" role="img" aria-label="Cause composition, each square is 1% of deaths"></div>
+            <div>
+              <div id="waffle-legend" class="waffle-legend"></div>
+              <p class="chart-footnote">Each square is 1% of deaths. Chapters outside the eight largest groups are combined as “Other”.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <h2>Yearly mortality trend</h2>
+            <p>Total recorded deaths by year.</p>
+          </div>
+          <div id="yearly-chart" class="chart"></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <h2>Sex composition</h2>
+            <p>Share of recorded deaths by sex.</p>
+          </div>
+          <div id="sex-chart" class="chart"></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading section-heading-row">
+            <div>
+              <h2>Coverage span</h2>
+              <p>Years with data for each value; shading shows the share of the country’s years covered.</p>
+            </div>
+            <label class="control compact">
+              <span class="visually-hidden">Dimension</span>
+              <select id="dimension-select">
+                <option value="region">Region</option>
+                <option value="age_group">Age group</option>
+                <option value="sex">Sex</option>
+                <option value="cause_group">Cause of death</option>
+              </select>
+            </label>
+          </div>
+          <div id="availability-chart" class="chart tall"></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <h2>Leading regions</h2>
+            <p>Top regions by recorded deaths.</p>
+          </div>
+          <div id="region-chart" class="chart tall"></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <h2>Leading causes</h2>
+            <p>Top causes by deaths (ICD-10 three-character codes).</p>
+          </div>
+          <div id="cause-chart" class="chart tall"></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <h2>Age profile</h2>
+            <p>Deaths by age group for the selected country.</p>
+          </div>
+          <div id="age-chart" class="chart tall"></div>
+        </section>
+
+        <section class="panel wide" id="sources">
+          <div class="section-heading">
+            <h2>Data sources</h2>
+            <p>
+              All figures come from the national statistical offices and ministries of health
+              below. Please cite them alongside this database.
+            </p>
+          </div>
+          <div class="table-wrap">
+            <table class="sources-table">
+              <thead>
+                <tr><th scope="col">Country</th><th scope="col">Mortality</th><th scope="col">Population</th></tr>
+              </thead>
+              <tbody id="sources-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel wide" id="about">
+          <div class="section-heading">
+            <h2>About &amp; credits</h2>
+            <p id="about-summary"></p>
+          </div>
+          <div class="about-grid">
+            <div>
+              <h3 class="credit-heading">
+                <img
+                  class="credit-logo institution-logo"
+                  src="./assets/lshtm.png"
+                  alt="London School of Hygiene &amp; Tropical Medicine"
+                />
+                <span>Team</span>
+              </h3>
+              <ul id="team-list" class="people-list"></ul>
+            </div>
+            <div>
+              <h3>Funding</h3>
+              <ul id="funder-list" class="plain-list"></ul>
+              <h3>Acknowledgements</h3>
+              <p id="acknowledgements"></p>
+            </div>
+            <div>
+              <h3>How to cite</h3>
+              <blockquote id="citation" class="citation"></blockquote>
+              <button id="copy-citation" class="pill-button subtle" type="button">Copy citation</button>
+              <p id="license" class="license"></p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>
+          © <span id="footer-year"></span> OpenCOD ·
+          <a href="./terms.html">Data use terms &amp; privacy</a> ·
+          <a href="#sources">Data sources</a> ·
+          <a id="footer-repo" href="#" hidden>Source code</a>
+        </p>
+      </footer>
+    </div>
+
+    <dialog id="auth-dialog" class="auth-dialog" aria-labelledby="auth-title">
+      <form method="dialog" class="dialog-close-form">
+        <button class="icon-button" aria-label="Close">✕</button>
+      </form>
+
+      <div id="auth-view-signin" class="auth-view">
+        <h2 id="auth-title">Sign in to download</h2>
+        <form id="signin-form" class="auth-form">
+          <label class="control"><span>Email</span>
+            <input type="email" name="email" required autocomplete="email" />
+          </label>
+          <label class="control"><span>Password</span>
+            <input type="password" name="password" required autocomplete="current-password" />
+          </label>
+          <button class="primary-button" type="submit">Sign in</button>
+        </form>
+        <p class="muted small"><button type="button" class="link-button" data-auth-view="forgot">Forgot your password?</button></p>
+        <p class="muted small">New here? <button type="button" class="link-button" data-auth-view="register">Register for data access</button></p>
+      </div>
+
+      <div id="auth-view-forgot" class="auth-view" hidden>
+        <h2>Reset your password</h2>
+        <p class="muted">Enter the email you registered with and we’ll send you a link to choose a new password.</p>
+        <form id="forgot-form" class="auth-form">
+          <label class="control"><span>Email</span>
+            <input type="email" name="email" required autocomplete="email" />
+          </label>
+          <button class="primary-button" type="submit">Email me a reset link</button>
+        </form>
+        <p class="muted small"><button type="button" class="link-button" data-auth-view="signin">Back to sign in</button></p>
+      </div>
+
+      <div id="auth-view-password" class="auth-view" hidden>
+        <h2>Set your password</h2>
+        <p class="muted">Choose a password (at least 8 characters). You’ll use it with your email to sign in next time.</p>
+        <form id="password-form" class="auth-form">
+          <label class="control"><span>New password</span>
+            <input type="password" name="password" required minlength="8" autocomplete="new-password" />
+          </label>
+          <label class="control"><span>Confirm password</span>
+            <input type="password" name="confirm" required minlength="8" autocomplete="new-password" />
+          </label>
+          <button class="primary-button" type="submit">Save password</button>
+        </form>
+      </div>
+
+      <div id="auth-view-register" class="auth-view" hidden>
+        <h2>Register for data access</h2>
+        <p class="muted">
+          Downloads are free. We ask who you are so we can report how the data are used and
+          contact you if a file is corrected.
+        </p>
+        <form id="register-form" class="auth-form">
+          <label class="control"><span>Full name</span>
+            <input name="full_name" required maxlength="200" autocomplete="name" />
+          </label>
+          <label class="control"><span>Email</span>
+            <input type="email" name="email" required autocomplete="email" />
+          </label>
+          <label class="control"><span>Institution / organisation</span>
+            <input name="institution" required maxlength="200" autocomplete="organization" />
+          </label>
+          <label class="control"><span>Country</span>
+            <input name="country" required maxlength="100" autocomplete="country-name" />
+          </label>
+          <label class="control"><span>Intended use</span>
+            <textarea name="intended_use" required maxlength="1000" rows="3"
+              placeholder="e.g. PhD thesis on cardiovascular mortality trends"></textarea>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" name="accepted_terms" required />
+            <span>I agree to the <a href="./terms.html" target="_blank" rel="noopener">data use terms and privacy notice</a>.</span>
+          </label>
+          <button class="primary-button" type="submit">Register and email me a link to set my password</button>
+        </form>
+        <p class="muted small">Already registered? <button type="button" class="link-button" data-auth-view="signin">Sign in</button></p>
+      </div>
+
+      <div id="auth-view-account" class="auth-view" hidden>
+        <h2>Your account</h2>
+        <p id="account-details" class="muted"></p>
+        <button type="button" class="pill-button subtle" data-auth-view="password">Change password</button>
+        <button id="signout-button" class="pill-button subtle" type="button">Sign out</button>
+      </div>
+
+      <p id="auth-message" class="auth-message" role="status" aria-live="polite"></p>
+    </dialog>
+
+    <div id="loading" class="loading" role="status">
+      <span class="spinner" aria-hidden="true"></span>
+      <span>Loading mortality data…</span>
+    </div>
+
+    <script src="./icd10.js?v=20261104-2"></script>
+    <script src="./auth.js?v=20261105-1"></script>
+    <script src="./app.js?v=20261104-2"></script>
+  </body>
+</html>

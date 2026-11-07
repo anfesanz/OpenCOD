@@ -1,0 +1,101 @@
+{
+  "_instructions": "Official data sources per country, shown under the download button and in the Data Sources table. Each country lists its mortality and population sources. Entries marked \"verify\": true were not found as URLs in the pipeline code (their raw files are supplied manually); check the link, then delete the flag.",
+  "countries": {
+    "Argentina": {
+      "mortality": [
+        { "institution": "Dirección de Estadísticas e Información en Salud (DEIS), Ministerio de Salud", "url": "https://www.argentina.gob.ar/salud/deis" , "verify": true }
+      ],
+      "population": [
+        { "institution": "Instituto Nacional de Estadística y Censos (INDEC)", "url": "https://www.indec.gob.ar/" }
+      ]
+    },
+    "Brazil": {
+      "mortality": [
+        { "institution": "Sistema de Informação sobre Mortalidade (SIM), Ministério da Saúde", "url": "https://dadosabertos.saude.gov.br/dataset/sim" }
+      ],
+      "population": [
+        { "institution": "Instituto Brasileiro de Geografia e Estatística (IBGE)", "url": "https://www.ibge.gov.br/" }
+      ]
+    },
+    "Chile": {
+      "mortality": [
+        { "institution": "Departamento de Estadísticas e Información de Salud (DEIS), MINSAL", "url": "https://deis.minsal.cl/#datosabiertos" }
+      ],
+      "population": [
+        { "institution": "Instituto Nacional de Estadísticas (INE)", "url": "https://www.ine.gob.cl/estadisticas-por-tema/demografia-y-poblacion/estimaciones-y-proyecciones-de-poblacion" }
+      ]
+    },
+    "Colombia": {
+      "mortality": [
+        { "institution": "Departamento Administrativo Nacional de Estadística (DANE), vital statistics", "url": "https://www.dane.gov.co/index.php/estadisticas-por-tema/salud/nacimientos-y-defunciones", "verify": true }
+      ],
+      "population": [
+        { "institution": "Departamento Administrativo Nacional de Estadística (DANE)", "url": "https://www.dane.gov.co/index.php/estadisticas-por-tema/demografia-y-poblacion/proyecciones-de-poblacion" }
+      ]
+    },
+    "Costa Rica": {
+      "mortality": [
+        { "institution": "Instituto Nacional de Estadística y Censos (INEC)", "url": "https://inec.cr/", "verify": true }
+      ],
+      "population": [
+        { "institution": "Instituto Nacional de Estadística y Censos (INEC)", "url": "https://admin.inec.cr/node/56328" }
+      ]
+    },
+    "Ecuador": {
+      "mortality": [
+        { "institution": "Instituto Nacional de Estadística y Censos (INEC), Defunciones Generales", "url": "https://aplicaciones3.ecuadorencifras.gob.ec/BIINEC-war/index.xhtml?oe=DEFUNCIONES%20GENERALES" }
+      ],
+      "population": [
+        { "institution": "Instituto Nacional de Estadística y Censos (INEC)", "url": "https://www.ecuadorencifras.gob.ec/proyecciones-poblacionales/" }
+      ]
+    },
+    "Guatemala": {
+      "mortality": [
+        { "institution": "Instituto Nacional de Estadística (INE), Estadísticas Vitales", "url": "https://datos.ine.gob.gt/dataset/estadisticas-vitales-defunciones" }
+      ],
+      "population": [
+        { "institution": "Instituto Nacional de Estadística (INE)", "url": "https://datos.ine.gob.gt/dataset/proyecciones-de-poblacion-2015-2030" }
+      ]
+    },
+    "Honduras": {
+      "mortality": [
+        { "institution": "Instituto Nacional de Estadística (INE), Hechos Vitales", "url": "https://temp.ine.gob.hn/wp-content/uploads/2025/02/Hechos-Vitales-2010-al-2012.pdf" }
+      ],
+      "population": [
+        { "institution": "Instituto Nacional de Estadística (INE)", "url": "https://temp.ine.gob.hn/wp-content/uploads/2025/02/Tomo-10-Proyecciones-Departamentales-2013-2030.pdf" }
+      ]
+    },
+    "Mexico": {
+      "mortality": [
+        { "institution": "Instituto Nacional de Estadística y Geografía (INEGI)", "url": "https://www.inegi.org.mx/temas/mortalidad/#herramientas" }
+      ],
+      "population": [
+        { "institution": "Consejo Nacional de Población (CONAPO)", "url": "https://www.datos.gob.mx/es/dataset/proyecciones-de-poblacion" }
+      ]
+    },
+    "Paraguay": {
+      "mortality": [
+        { "institution": "Instituto Nacional de Estadística (INE), Estadísticas Vitales", "url": "https://www.ine.gov.py/Publicaciones/estadisticas_vitales_2024.php" }
+      ],
+      "population": [
+        { "institution": "Instituto Nacional de Estadística (INE)", "url": "https://www.ine.gov.py/publication-single.php?codec=293" }
+      ]
+    },
+    "Peru": {
+      "mortality": [
+        { "institution": "Sistema Informático Nacional de Defunciones (SINADEF), MINSA", "url": "https://www.datosabiertos.gob.pe/", "verify": true }
+      ],
+      "population": [
+        { "institution": "Instituto Nacional de Estadística e Informática (INEI)", "url": "https://www.inei.gob.pe/media/MenuRecursivo/publicaciones_digitales/Est/Lib1722/" }
+      ]
+    },
+    "Uruguay": {
+      "mortality": [
+        { "institution": "Ministerio de Salud Pública (MSP), Estadísticas Vitales", "url": "https://www.gub.uy/ministerio-salud-publica/", "verify": true }
+      ],
+      "population": [
+        { "institution": "Instituto Nacional de Estadística (INE)", "url": "https://www.gub.uy/instituto-nacional-estadistica/proyeccionesrev2025" }
+      ]
+    }
+  }
+}

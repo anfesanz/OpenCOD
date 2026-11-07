@@ -1,0 +1,38 @@
+{
+  "_instructions": "This file is used to update the About & Credits section.",
+  "project": {
+    "name": "OpenCOD: The Open Cause-of-Death Database",
+    "summary": "A harmonised database of official mortality and population statistics launched as a pilot in Latin America and now open to countries worldwide, assembled from national statistical offices and ministries of health while preserving every source and methodological caveat. Fully reproducible code and data are available on GitHub; the database can be downloaded after registration.",
+    "repository": "https://github.com/Mortality-Inequalities-Research-Group/LAMICOD",
+    "contact_email": ""
+  },
+  "team": [
+        {
+      "name": "Dr. José Manuel Aburto",
+      "role": "Associate Professor in Demography",
+      "affiliation": "London School of Hygiene & Tropical Medicine",
+      "url": "https://www.lshtm.ac.uk/aboutus/people/aburto.jose-manuel"
+    },
+    {
+      "name": "Dr. Felipe Sanchez",
+      "role": "Research Fellow",
+      "affiliation": "London School of Hygiene & Tropical Medicine",
+      "url": "https://www.lshtm.ac.uk/aboutus/people/sanchez.felipe"
+    }
+
+  ],
+  "funders": [
+    {
+      "name": "Wellcome",
+      "grant": "307859/Z/23/Z",
+      "url": "",
+      "logo": "./assets/wellcome.png"
+    }
+  ],
+  "acknowledgements": "We thank Maria Gargiulo, Dayana Tipan-Jimenez, and Denise Helena for their contributions at the beginning of the project.",
+  "citation": "Aburto JM, Sanchez F. OpenCOD: The Open Cause-of-Death Database [dataset]. London: London School of Hygiene & Tropical Medicine; 2026. Available from: https://github.com/Mortality-Inequalities-Research-Group/LAMICOD",
+  "license": {
+    "name": "CC BY 4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/"
+  }
+}
